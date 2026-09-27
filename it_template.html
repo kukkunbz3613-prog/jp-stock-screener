@@ -61,8 +61,14 @@ a { color: var(--accent); }
   .nums { grid-template-columns: repeat(2, 1fr); margin-left: 0; }
   .meta { margin-left: 0; }
 }
+.filters .check { justify-content: center; }
+.filters .check span { color: var(--text); font-size: .85rem; }
+.filters .check small { color: var(--muted); font-size: .7rem; }
 .src { color: var(--muted); font-size: .72rem; margin: 8px 0 0 3.2em; }
-@media (max-width: 560px) { .src { margin-left: 0; } }
+@media (max-width: 560px) { .filters .check { justify-content: center; }
+.filters .check span { color: var(--text); font-size: .85rem; }
+.filters .check small { color: var(--muted); font-size: .7rem; }
+.src { margin-left: 0; } }
 .more { display: block; margin: 14px auto 0; font: inherit; padding: 9px 18px; border-radius: 8px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
 .method { color: var(--text-2); font-size: .88rem; }
@@ -102,6 +108,8 @@ a { color: var(--accent); }
         <option value="ratio">売上に対する割合</option><option value="inv">投資額</option>
         <option value="growth">前期からの増加率</option><option value="emp">従業員1人あたり</option>
       </select></label>
+    <label class="check"><span><input type="checkbox" id="exLand" checked> 不動産・電力ガスを除く</span>
+      <small>借地権などが「無形資産」に入り、IT投資と区別できないため</small></label>
     <label>社名で検索<input id="q" type="search" placeholder="例：銀行"></label>
   </div>
 
@@ -133,17 +141,17 @@ a { color: var(--accent); }
   const fmt = (v, d = 1) => v == null ? '—' : v.toLocaleString('ja-JP', { maximumFractionDigits: d, minimumFractionDigits: d });
   const pct = (v, sign) => v == null ? '—' : (sign && v > 0 ? '+' : '') + (v * 100).toFixed(1) + '%';
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const PAGE = 50;
+  const PAGE = 50, LAND = new Set(['不動産業', '電気・ガス業']);
   let shown = PAGE, current = [];
 
   function apply() {
     const minInv = +$('minInv').value, minRev = +$('minRev').value, maxRev = $('maxRev').value ? +$('maxRev').value : Infinity;
     const ind = $('ind').value, pref = $('pref').value, listed = $('listed').value;
-    const q = $('q').value.trim();
+    const q = $('q').value.trim(), exLand = $('exLand').checked;
     const key = { ratio: 10, inv: 6, growth: 7, emp: 12 }[$('sort').value];
     current = rows.filter(r => r[6] >= minInv && (r[9] == null ? maxRev === Infinity && minRev === 0 : r[9] >= minRev && r[9] <= maxRev)
       && (!ind || r[3] === ind) && (!pref || r[4] === pref) && (!listed || r[2] === listed)
-      && (!q || r[0].includes(q)));
+      && (!q || r[0].includes(q)) && !(exLand && LAND.has(r[3])));
     current.sort((a, b) => (b[key] ?? -Infinity) - (a[key] ?? -Infinity));
     shown = PAGE;
     render();
@@ -170,7 +178,7 @@ a { color: var(--accent); }
     $('more').hidden = shown >= current.length;
   }
 
-  ['minInv', 'minRev', 'maxRev', 'ind', 'pref', 'listed', 'sort'].forEach(id => $(id).addEventListener('change', apply));
+  ['minInv', 'minRev', 'maxRev', 'ind', 'pref', 'listed', 'sort', 'exLand'].forEach(id => $(id).addEventListener('change', apply));
   $('q').addEventListener('input', apply);
   $('more').addEventListener('click', () => { shown += PAGE; render(); });
   apply();

@@ -24,6 +24,7 @@ import csv
 import datetime as dt
 import io
 import json
+import math
 import os
 import re
 import sys
@@ -273,6 +274,60 @@ def load_codelist() -> pd.DataFrame:
 
 
 PREF = re.compile(r"^(東京都|北海道|京都府|大阪府|.{2,3}?県)")
+# EDINET の所在地は東京23区・政令指定都市だと都道府県が省かれているので補う
+TOKYO_WARDS = ("千代田区 中央区 港区 新宿区 文京区 台東区 墨田区 江東区 品川区 目黒区 大田区 世田谷区 渋谷区 "
+               "中野区 杉並区 豊島区 北区 荒川区 板橋区 練馬区 足立区 葛飾区 江戸川区").split()
+CITY_PREF = {"札幌市": "北海道", "仙台市": "宮城県", "さいたま市": "埼玉県", "千葉市": "千葉県",
+             "横浜市": "神奈川県", "川崎市": "神奈川県", "相模原市": "神奈川県", "新潟市": "新潟県",
+             "静岡市": "静岡県", "浜松市": "静岡県", "名古屋市": "愛知県", "京都市": "京都府",
+             "大阪市": "大阪府", "堺市": "大阪府", "神戸市": "兵庫県", "岡山市": "岡山県",
+             "広島市": "広島県", "北九州市": "福岡県", "福岡市": "福岡県", "熊本市": "熊本県"}
+
+
+CITIES_URL = "https://geolonia.github.io/japanese-addresses/api/ja.json"  # {都道府県: [市区町村, ...]}
+CITIES_CACHE = ROOT / "data" / "cities.json"
+_city_list: list[tuple[str, str]] | None = None
+
+
+def city_list() -> list[tuple[str, str]]:
+    """(市区町村名, 都道府県) の一覧。長い名前から順に照合できるよう並べる。"""
+    global _city_list
+    if _city_list is None:
+        data = {}
+        try:
+            r = requests.get(CITIES_URL, timeout=60)
+            r.raise_for_status()
+            data = r.json()
+            CITIES_CACHE.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        except Exception as e:  # noqa: BLE001 — 取れなければキャッシュか手持ちの対応表で補う
+            log(f"市区町村一覧を取得できませんでした: {e}")
+            if CITIES_CACHE.exists():
+                data = json.loads(CITIES_CACHE.read_text(encoding="utf-8"))
+        pairs: dict[str, set[str]] = {}
+        for pref, cities in data.items():
+            for c in cities:
+                pairs.setdefault(c, set()).add(pref)
+                # 「安芸郡府中町」のような郡付きの名前は、郡を省いた書き方でも照合する
+                if "郡" in c:
+                    pairs.setdefault(c.split("郡", 1)[1], set()).add(pref)
+        for w in TOKYO_WARDS:
+            pairs.setdefault(w, set()).add("東京都")
+        for c, p in CITY_PREF.items():
+            pairs.setdefault(c, set()).add(p)
+        # 同じ名前の市が複数の県にある場合（府中市など）は判定しない
+        _city_list = sorted(((c, next(iter(p))) for c, p in pairs.items() if len(p) == 1 and len(c) >= 2),
+                            key=lambda x: -len(x[0]))
+    return _city_list
+
+
+def prefecture(address: str) -> str:
+    address = (address or "").strip()
+    if m := PREF.match(address):
+        return m.group(1)
+    for city, pref in city_list():
+        if address.startswith(city):
+            return pref
+    return ""
 
 
 def build(raw: pd.DataFrame, codes: pd.DataFrame) -> pd.DataFrame:
@@ -281,9 +336,9 @@ def build(raw: pd.DataFrame, codes: pd.DataFrame) -> pd.DataFrame:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     df = df[df["sw_invest"] >= MIN_INVEST_LISTED].copy()
     df["ratio"] = df["sw_invest"] / df["revenue"]
-    df["growth"] = df["sw_invest"] / df["sw_prev"] - 1
+    df["growth"] = (df["sw_invest"] / df["sw_prev"].where(df["sw_prev"] > 0) - 1)
     df["per_emp"] = df["sw_invest"] / df["employees"]
-    df["pref"] = df["address"].fillna("").str.extract(PREF, expand=False).fillna("")
+    df["pref"] = df["address"].fillna("").map(prefecture)
     df["code"] = df["secCode"].fillna("").astype(str).str[:4]
     df["listed"] = df["listed"].fillna("")
     df["industry"] = df["industry"].fillna("")
@@ -306,7 +361,8 @@ def write_outputs(df: pd.DataFrame, demo: bool) -> None:
     }).to_csv(ROOT / "docs" / "it_invest.csv", index=False, encoding="utf-8-sig")
 
     def r(v, d=4):
-        return None if pd.isna(v) else round(float(v), d)
+        # JSON に NaN / Infinity は書けない（ページが表示されなくなる）ので null にする
+        return round(float(v), d) if pd.notna(v) and math.isfinite(float(v)) else None
 
     records = [[x.filerName, x.code, x.listed, x.industry, x.pref, x.periodEnd,
                 r(x.sw_invest / 1e8, 2), r(x.growth), x.basis, r(x.revenue / 1e8 if pd.notna(x.revenue) else None, 1),
@@ -315,7 +371,7 @@ def write_outputs(df: pd.DataFrame, demo: bool) -> None:
     page = (ROOT / "it_template.html").read_text(encoding="utf-8")
     note = ('<p class="banner">⚠ デモモード：合成データです。実在の企業の数値ではありません。</p>' if demo else "")
     for k, v in {"TODAY": today, "N": f"{len(df):,}", "DEMO_NOTE": note,
-                 "DATA": json.dumps(records, ensure_ascii=False).replace("</", "<\\/")}.items():
+                 "DATA": json.dumps(records, ensure_ascii=False, allow_nan=False).replace("</", "<\\/")}.items():
         page = page.replace(f"%%{k}%%", v)
     (ROOT / "docs" / "it-invest.html").write_text(page, encoding="utf-8")
 
