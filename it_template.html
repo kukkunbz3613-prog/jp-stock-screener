@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IT投資が多い企業</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f6f4; --surface: #fcfcfb; --border: #e4e3de;
+  --text: #0b0b0b; --text-2: #52514e; --muted: #86857f;
+  --accent: #2a78d6; --bar: #2a78d6; --bar-bg: #e8eef7;
+  --pos: #c8321f; --neg: #1f6fd1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #2e2d2b;
+    --text: #fff; --text-2: #c3c2b7; --muted: #8e8d86;
+    --accent: #3987e5; --bar: #3987e5; --bar-bg: #23303f;
+    --pos: #ff7a66; --neg: #6aa8ff;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #2e2d2b;
+  --text: #fff; --text-2: #c3c2b7; --muted: #8e8d86;
+  --accent: #3987e5; --bar: #3987e5; --bar-bg: #23303f;
+  --pos: #ff7a66; --neg: #6aa8ff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.55 system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.15rem; margin: 36px 0 10px; }
+a { color: var(--accent); }
+.sub { color: var(--text-2); margin: 0 0 18px; }
+.banner { background: #fff4d6; color: #5a4300; padding: 10px 14px; border-radius: 8px; }
+.filters { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.filters label { display: flex; flex-direction: column; gap: 4px; font-size: .78rem; color: var(--text-2); }
+.filters select, .filters input { font: inherit; font-size: .9rem; padding: 7px 9px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text); min-width: 0; }
+.count { margin: 14px 0 8px; color: var(--text-2); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.count b { color: var(--text); }
+.list { display: grid; gap: 10px; }
+.item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.item-head { display: flex; gap: 10px; align-items: baseline; }
+.rank { color: var(--accent); font-weight: 700; min-width: 2.2em; font-variant-numeric: tabular-nums; }
+.name { font-weight: 700; flex: 1; min-width: 0; }
+.tag { font-size: .7rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-2); white-space: nowrap; }
+.meta { color: var(--muted); font-size: .8rem; margin: 2px 0 8px 3.2em; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 12px; margin-left: 3.2em; }
+.nums dt { color: var(--muted); font-size: .72rem; }
+.nums dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.meter { height: 6px; background: var(--bar-bg); border-radius: 3px; margin-top: 3px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--bar); border-radius: 3px; }
+.pos { color: var(--pos); } .neg { color: var(--neg); }
+@media (max-width: 560px) {
+  .nums { grid-template-columns: repeat(2, 1fr); margin-left: 0; }
+  .meta { margin-left: 0; }
+}
+.more { display: block; margin: 14px auto 0; font: inherit; padding: 9px 18px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+.method { color: var(--text-2); font-size: .88rem; }
+.method li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>IT投資が多い企業</h1>
+  <p class="sub">%%TODAY%% 更新 ・ 有価証券報告書（EDINET）から、売上高に対するソフトウェア投資の割合が高い順に %%N%% 社（年間投資1億円以上） ・ <a href="./">株価ランキングへ</a></p>
+  %%DEMO_NOTE%%
+
+  <div class="filters">
+    <label>ソフトウェア投資（年間）
+      <select id="minInv">
+        <option value="1">1億円以上</option><option value="5">5億円以上</option>
+        <option value="10" selected>10億円以上</option><option value="30">30億円以上</option>
+        <option value="100">100億円以上</option>
+      </select></label>
+    <label>売上高
+      <select id="maxRev">
+        <option value="">指定なし</option><option value="100">100億円以下</option>
+        <option value="300">300億円以下</option><option value="1000" selected>1,000億円以下</option>
+        <option value="3000">3,000億円以下</option>
+      </select></label>
+    <label>業種<select id="ind"><option value="">すべて</option></select></label>
+    <label>都道府県<select id="pref"><option value="">すべて</option></select></label>
+    <label>上場区分
+      <select id="listed"><option value="">すべて</option><option>上場</option><option>非上場</option></select></label>
+    <label>並び順
+      <select id="sort">
+        <option value="ratio">売上に対する割合</option><option value="inv">投資額</option>
+        <option value="growth">前期からの増加率</option><option value="emp">従業員1人あたり</option>
+      </select></label>
+    <label>社名で検索<input id="q" type="search" placeholder="例：銀行"></label>
+  </div>
+
+  <div class="count"><span><b id="cnt">0</b> 社が該当</span><a href="it_invest.csv" download>CSVをダウンロード（全件）</a></div>
+  <div class="list" id="list"></div>
+  <button class="more" id="more" hidden>さらに表示</button>
+
+  <h2>数字の見方と注意点</h2>
+  <ul class="method">
+    <li><b>ソフトウェア投資</b>：キャッシュ・フロー計算書の「ソフトウェアの取得による支出」です。この項目がない会社は「無形固定資産の取得による支出」で代用し、「無形資産」と表示しています（ソフトウェア以外ののれんや権利を含むことがあります）。</li>
+    <li>クラウド利用料、保守・運用委託費、IT部門の人件費など「費用」として処理されるIT支出は含まれません。実際のIT支出はこれより大きいのが普通です。</li>
+    <li>ソフトウェア会社の場合、投資の多くは販売する製品の開発費です。</li>
+    <li>対象は有価証券報告書を提出している会社（上場企業と、株主数が多い一部の非上場企業）です。それ以外の非上場企業は含まれません。</li>
+    <li>数字は各社の最新の有価証券報告書（連結があれば連結）から機械的に取り出しています。項目名の違いで取りこぼしや誤りがありうるので、営業に使う前に原本を確認してください。</li>
+  </ul>
+</main>
+<script id="data" type="application/json">%%DATA%%</script>
+<script>
+(() => {
+  // [社名, コード, 上場区分, 業種, 都道府県, 決算期末, 投資(億), 前期比, 根拠, 売上(億), 割合, 従業員, 1人あたり(万)]
+  const rows = JSON.parse(document.getElementById('data').textContent);
+  const $ = id => document.getElementById(id);
+  const uniq = i => [...new Set(rows.map(r => r[i]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ja'));
+  const fill = (sel, vals) => vals.forEach(v => sel.add(new Option(v, v)));
+  fill($('ind'), uniq(3));
+  const prefOrder = '北海道青森県岩手県宮城県秋田県山形県福島県茨城県栃木県群馬県埼玉県千葉県東京都神奈川県新潟県富山県石川県福井県山梨県長野県岐阜県静岡県愛知県三重県滋賀県京都府大阪府兵庫県奈良県和歌山県鳥取県島根県岡山県広島県山口県徳島県香川県愛媛県高知県福岡県佐賀県長崎県熊本県大分県宮崎県鹿児島県沖縄県';
+  fill($('pref'), uniq(4).sort((a, b) => prefOrder.indexOf(a) - prefOrder.indexOf(b)));
+
+  const fmt = (v, d = 1) => v == null ? '—' : v.toLocaleString('ja-JP', { maximumFractionDigits: d, minimumFractionDigits: d });
+  const pct = (v, sign) => v == null ? '—' : (sign && v > 0 ? '+' : '') + (v * 100).toFixed(1) + '%';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const PAGE = 50;
+  let shown = PAGE, current = [];
+
+  function apply() {
+    const minInv = +$('minInv').value, maxRev = $('maxRev').value ? +$('maxRev').value : Infinity;
+    const ind = $('ind').value, pref = $('pref').value, listed = $('listed').value;
+    const q = $('q').value.trim();
+    const key = { ratio: 10, inv: 6, growth: 7, emp: 12 }[$('sort').value];
+    current = rows.filter(r => r[6] >= minInv && (r[9] == null ? maxRev === Infinity : r[9] <= maxRev)
+      && (!ind || r[3] === ind) && (!pref || r[4] === pref) && (!listed || r[2] === listed)
+      && (!q || r[0].includes(q)));
+    current.sort((a, b) => (b[key] ?? -Infinity) - (a[key] ?? -Infinity));
+    shown = PAGE;
+    render();
+  }
+
+  function render() {
+    $('cnt').textContent = current.length.toLocaleString();
+    const maxRatio = Math.max(0.0001, ...current.slice(0, 20).map(r => r[10] || 0));
+    $('list').innerHTML = current.slice(0, shown).map((r, i) => `
+      <article class="item">
+        <div class="item-head"><span class="rank">${i + 1}</span>
+          <span class="name">${esc(r[0])}</span>
+          <span class="tag">${esc(r[2] || '—')}${r[1] ? ' ' + esc(r[1]) : ''}</span></div>
+        <div class="meta">${esc(r[3] || '業種不明')} ・ ${esc(r[4] || '所在地不明')} ・ ${esc(r[5] || '')}期</div>
+        <dl class="nums">
+          <div><dt>ソフトウェア投資${r[8] === '無形資産' ? '（無形資産）' : ''}</dt><dd>${fmt(r[6])}億円</dd></div>
+          <div><dt>売上に対する割合</dt><dd>${pct(r[10])}</dd>
+            <div class="meter"><i style="width:${Math.min(100, (r[10] || 0) / maxRatio * 100)}%"></i></div></div>
+          <div><dt>売上高</dt><dd>${fmt(r[9], 0)}億円</dd></div>
+          <div><dt>前期比 / 1人あたり</dt><dd><span class="${r[7] > 0 ? 'pos' : r[7] < 0 ? 'neg' : ''}">${pct(r[7], true)}</span> / ${fmt(r[12], 0)}万円</dd></div>
+        </dl>
+      </article>`).join('');
+    $('more').hidden = shown >= current.length;
+  }
+
+  ['minInv', 'maxRev', 'ind', 'pref', 'listed', 'sort'].forEach(id => $(id).addEventListener('change', apply));
+  $('q').addEventListener('input', apply);
+  $('more').addEventListener('click', () => { shown += PAGE; render(); });
+  apply();
+})();
+</script>
+</body>
+</html>

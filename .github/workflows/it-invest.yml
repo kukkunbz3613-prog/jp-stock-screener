@@ -1,0 +1,43 @@
+name: it-invest
+
+on:
+  schedule:
+    - cron: "0 21 * * 0"      # 毎週月曜 6:00 JST
+  workflow_dispatch:          # Actions 画面から手動実行
+  push:
+    branches: [main]
+    paths:
+      - "it_invest.py"
+      - "it_template.html"
+      - ".github/workflows/it-invest.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: it-invest
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python it_invest.py
+        env:
+          EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
+      - name: Commit results
+        if: always()          # 途中で失敗しても取得済みの分とログは保存する
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs data
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "IT investment list $(TZ=Asia/Tokyo date +%F)"
+          for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
