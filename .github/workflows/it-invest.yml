@@ -33,6 +33,13 @@ jobs:
       - run: python it_invest.py
         env:
           EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
+      - name: Send weekly summary mail
+        if: github.event_name != 'push'   # コード修正時の自動実行では送らない
+        run: python send_summary.py
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
       - name: Commit results
         if: always()          # 途中で失敗しても取得済みの分とログは保存する
         run: |
