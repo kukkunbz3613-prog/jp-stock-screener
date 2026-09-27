@@ -9,6 +9,7 @@ on:
     paths:
       - "it_invest.py"
       - "it_template.html"
+      - "data/unlisted_candidates.csv"
       - ".github/workflows/it-invest.yml"
 
 permissions:

@@ -370,7 +370,10 @@ def write_outputs(df: pd.DataFrame, demo: bool) -> None:
                for x in df.itertuples()]
     page = (ROOT / "it_template.html").read_text(encoding="utf-8")
     note = ('<p class="banner">⚠ デモモード：合成データです。実在の企業の数値ではありません。</p>' if demo else "")
-    for k, v in {"TODAY": today, "N": f"{len(df):,}", "DEMO_NOTE": note,
+    ucsv = ROOT / "data" / "unlisted_candidates.csv"
+    urows = pd.read_csv(ucsv, dtype=str).fillna("").to_dict("records") if ucsv.exists() else []
+    for k, v in {"TODAY": today, "N": f"{len(df):,}", "DEMO_NOTE": note, "NU": str(len(urows)),
+                 "UDATA": json.dumps(urows, ensure_ascii=False).replace("</", "<\\/"),
                  "DATA": json.dumps(records, ensure_ascii=False, allow_nan=False).replace("</", "<\\/")}.items():
         page = page.replace(f"%%{k}%%", v)
     (ROOT / "docs" / "it-invest.html").write_text(page, encoding="utf-8")

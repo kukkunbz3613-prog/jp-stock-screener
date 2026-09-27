@@ -1,0 +1,29 @@
+社名,分類,都道府県,所在地,規模,IT関連の動き・特徴,出典,確認日
+日本マスタートラスト信託銀行,金融インフラ,東京都,港区,,三菱UFJ信託銀行の子会社。年金・投資信託の資産管理専業で、業務の大半がシステム処理。ディスクロージャー誌を毎年公開,https://www.mastertrust.co.jp/company/disclosure.html,2026-09-27
+証券保管振替機構（ほふり）,金融インフラ,東京都,,,株式・社債などの保管振替（決済）インフラの運営主体,https://www.jasdec.com/about/business/,2026-09-27
+日本証券クリアリング機構,金融インフラ,東京都,,,日本取引所グループ（JPX）の清算機関。証拠金計算・リスク管理などシステム依存度が高い,https://www.jpx.co.jp/jscc/,2026-09-27
+全国銀行資金決済ネットワーク（全銀ネット）,金融インフラ,東京都,,,新しい銀行間送金システムを2030年稼働目標で検討。2026年度にRFI・RFP、年度末をめどにベンダー選定予定,https://www.nikkei.com/article/DGXZQOUB177F90X10C26A3000000/,2026-09-27
+日本資産運用基盤（JAMP）,金融インフラ,東京都,千代田区,,資産運用会社向けの事務・システム基盤を提供。三菱UFJ信託銀行とファンド・マネジメント・カンパニー事業で提携,https://www.jamplatform.com/company/overview,2026-09-27
+ソニー銀行,ネット銀行・証券・暗号資産,東京都,,,2025年5月に勘定系システムをAWS上へ全面移行（富士通が支援）,https://sonybank.jp/corporate/disclosure/press/2025/0507-01.html,2026-09-27
+GMOあおぞらネット銀行,ネット銀行・証券・暗号資産,東京都,渋谷区,,2025年4〜9月期に開業以来初の黒字化,https://www.nikkei.com/article/DGXZQOUB136C90T11C25A1000000/,2026-09-27
+PayPay銀行,ネット銀行・証券・暗号資産,東京都,,純利益141億円（2026年3月期）,若年層の口座が5年で4倍に増加,https://finance.yahoo.co.jp/news/detail/b537d4d3e6836d27fedcff23ede83453595d00a1,2026-09-27
+auじぶん銀行,ネット銀行・証券・暗号資産,東京都,,,ディスクロージャー誌を毎年公開（設備投資額の確認が可能）,https://www.jibunbank.co.jp/corporate/financial_information/,2026-09-27
+ローソン銀行,ネット銀行・証券・暗号資産,東京都,,,全国約1.35万台のATMを新型に順次入れ替え中。投資額は300億円程度と報道,https://www.nikkei.com/article/DGXZQOUB072ZD0X01C23A1000000/,2026-09-27
+イオン銀行,ネット銀行・証券・暗号資産,要確認,,,イオンフィナンシャルサービスの子会社。財務諸表の概況を毎期公開（所在地は未確認）,https://www.aeonbank.co.jp/company/disclosure/account/,2026-09-27
+PayPay証券,ネット銀行・証券・暗号資産,東京都,,,2026年3月期に創業以来初めて通期の営業黒字,https://www.paypay-sec.co.jp/corporate/discloser/,2026-09-27
+bitFlyer,ネット銀行・証券・暗号資産,東京都,,営業収益135.7億円（2025年12月期）,暗号資産交換業。預かり資産は約1兆円,https://jinacoin.ne.jp/bitflyer-2025-results-20250502/,2026-09-27
+ビットバンク,ネット銀行・証券・暗号資産,東京都,,売上高58.2億円（2025年12月期）,暗号資産交換業。株式上場を準備中,https://catr.jp/companies/12e5e/52783,2026-09-27
+日本カードネットワーク（CARDNET）,カード・決済,東京都,,売上高582.7億円（2024年度）・380人,JCBの子会社。クレジット決済ネットワーク「CARDNET」を運営,https://www.cardnet.co.jp/company/achievement.html,2026-09-27
+ペイジェント,カード・決済,東京都,渋谷区,売上高149.0億円（2023年3月期）,決済代行。NTTデータと三菱UFJニコスが各50%出資,https://www.paygent.co.jp/company/,2026-09-27
+SBペイメントサービス,カード・決済,東京都,,決済取扱高9.8兆円（2025年3月期）,ソフトバンクの決済代行子会社。非通信領域で拡大中,https://paymentnavi.com/paymentnews/160633.html,2026-09-27
+DGフィナンシャルテクノロジー,カード・決済,東京都,渋谷区,,デジタルガレージグループのインターネット決済代行,https://baseconnect.in/companies/c85e302d-c9aa-4e1a-9ba9-675185caabc1,2026-09-27
+三井住友カード,カード・決済,東京都,,,次期システムの開発・次世代決済プラットフォームの構築に着手,https://www.smfg.co.jp/chronicle20/history20/section10411.html,2026-09-27
+ソニー損害保険,保険,東京都,,正味収入保険料1671.1億円（2025年3月期）,ダイレクト型（通販型）損保。ネット・電話で完結する業務,https://www.shinnihon-ins.co.jp/industry-news/industry-news-20250516/,2026-09-27
+東京海上日動システムズ,金融グループのIT子会社,東京都,多摩市,売上高310.6億円（2026年3月期）・1829人,東京海上グループの情報システムの企画・開発・保守・運用,https://www.tmn-systems.jp/company/about.html,2026-09-27
+SOMPOシステムズ,金融グループのIT子会社,東京都,,売上高484.7億円（2026年3月期）・1806人,SOMPOグループのシステム会社,https://job.mynavi.jp/27/pc/search/corp67138/outline.html,2026-09-27
+MS&ADシステムズ,金融グループのIT子会社,東京都,新宿区,売上高193.5億円（2025年3月期）・1792人,三井住友海上・あいおいニッセイ同和損保などのシステム企画・開発・運用,https://www.geekly.co.jp/companys/data/5719/,2026-09-27
+明治安田システム・テクノロジー,金融グループのIT子会社,東京都,江東区,売上高367.3億円（2025年3月期）・1445人,明治安田グループ唯一のシステム会社,https://www.mytecno.com/corporate/,2026-09-27
+第一生命テクノクロス（旧 第一生命情報システム）,金融グループのIT子会社,東京都,千代田区,売上高311億円（2022年度）・1799人,第一生命ホールディングスの完全子会社,https://job.mynavi.jp/26/pc/search/corp39202/outline.html,2026-09-27
+T&D情報システム,金融グループのIT子会社,埼玉県,,売上高241.7億円,T&D保険グループ（太陽生命・大同生命など）唯一のIT会社,https://www.carrikatu-it.com/saitama-rank/,2026-09-27
+SmartHR,SaaS・IT,東京都,,ARR 300億円超（2026年7月）,人事労務SaaS。2030年に売上1000億円を目標,https://smarthr.jp/release/20260707/,2026-09-27
+ワークスアプリケーションズ,SaaS・IT,東京都,千代田区,売上高111.3億円（2025年6月期）,大手企業向けERPパッケージの開発・販売,https://kanpo-kanpo.blog.jp/archives/45201080.html,2026-09-27

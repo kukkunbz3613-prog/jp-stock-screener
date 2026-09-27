@@ -69,6 +69,14 @@ a { color: var(--accent); }
 .filters .check span { color: var(--text); font-size: .85rem; }
 .filters .check small { color: var(--muted); font-size: .7rem; }
 .src { margin-left: 0; } }
+.tabs { display: flex; gap: 8px; margin: 0 0 14px; }
+.tabs button { flex: 1; font: inherit; font-weight: 600; padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-2); text-align: left; }
+.tabs button small { display: block; font-weight: 400; font-size: .72rem; color: var(--muted); }
+.tabs button[aria-selected="true"] { border-color: var(--accent); color: var(--text); box-shadow: inset 0 -3px 0 var(--accent); }
+.note { color: var(--text-2); font-size: .88rem; margin: 0 0 12px; }
+.meta.u, .src.u { margin-left: 0; }
+.desc { margin: 0; font-size: .9rem; }
 .more { display: block; margin: 14px auto 0; font: inherit; padding: 9px 18px; border-radius: 8px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
 .method { color: var(--text-2); font-size: .88rem; }
@@ -81,6 +89,12 @@ a { color: var(--accent); }
   <p class="sub">%%TODAY%% 更新 ・ 有価証券報告書（EDINET）から、売上高に対するソフトウェア投資の割合が高い順に %%N%% 社（年間投資1億円以上） ・ <a href="./">株価ランキングへ</a></p>
   %%DEMO_NOTE%%
 
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tabBtnE" aria-selected="true">有価証券報告書から<small>%%N%%社</small></button>
+    <button role="tab" id="tabBtnU" aria-selected="false">非上場の候補<small>%%NU%%社・手作業で調査</small></button>
+  </div>
+
+  <section id="tabE">
   <div class="filters">
     <label>ソフトウェア投資（年間）
       <select id="minInv">
@@ -116,6 +130,17 @@ a { color: var(--accent); }
   <div class="count"><span><b id="cnt">0</b> 社が該当</span><a href="it_invest.csv" download>CSVをダウンロード（全件）</a></div>
   <div class="list" id="list"></div>
   <button class="more" id="more" hidden>さらに表示</button>
+  </section>
+
+  <section id="tabU" hidden>
+  <p class="note">有価証券報告書を出していない非上場企業から、金融・IT・サービスで首都圏（東京・神奈川・千葉・埼玉）の会社を Web で調べた候補です。<b>IT投資額そのものは未確認</b>で、規模とIT関連の動きから選んでいます。数字は出典の時点のものです。</p>
+  <div class="filters">
+    <label>分類<select id="uCat"><option value="">すべて</option></select></label>
+    <label>都道府県<select id="uPref"><option value="">すべて</option></select></label>
+  </div>
+  <div class="count"><span><b id="uCnt">0</b> 社</span></div>
+  <div class="list" id="uList"></div>
+  </section>
 
   <h2>数字の見方と注意点</h2>
   <ul class="method">
@@ -127,6 +152,7 @@ a { color: var(--accent); }
   </ul>
 </main>
 <script id="data" type="application/json">%%DATA%%</script>
+<script id="udata" type="application/json">%%UDATA%%</script>
 <script>
 (() => {
   // [社名, コード, 上場区分, 業種, 都道府県, 決算期末, 投資(億), 前期比, 根拠, 売上(億), 割合, 従業員, 1人あたり(万), 項目名]
@@ -182,6 +208,34 @@ a { color: var(--accent); }
   $('q').addEventListener('input', apply);
   $('more').addEventListener('click', () => { shown += PAGE; render(); });
   apply();
+
+  // 非上場の候補: {社名, 分類, 都道府県, 所在地, 規模, IT関連の動き・特徴, 出典, 確認日}
+  const urows = JSON.parse(document.getElementById('udata').textContent);
+  const ufill = (sel, key) => fill(sel, [...new Set(urows.map(r => r[key]).filter(Boolean))]);
+  ufill($('uCat'), '分類'); ufill($('uPref'), '都道府県');
+  const host = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return '出典'; } };
+  function uapply() {
+    const cat = $('uCat').value, pref = $('uPref').value;
+    const list = urows.filter(r => (!cat || r['分類'] === cat) && (!pref || r['都道府県'] === pref));
+    $('uCnt').textContent = list.length;
+    $('uList').innerHTML = list.map(r => `
+      <article class="item">
+        <div class="item-head"><span class="name">${esc(r['社名'])}</span><span class="tag">${esc(r['分類'])}</span></div>
+        <div class="meta u">${esc(r['都道府県'] || '')}${r['所在地'] ? '・' + esc(r['所在地']) : ''}${r['規模'] ? ' ・ ' + esc(r['規模']) : ''}</div>
+        <p class="desc">${esc(r['IT関連の動き・特徴'] || '')}</p>
+        <div class="src u">出典：${r['出典'] ? `<a href="${esc(r['出典'])}" target="_blank" rel="noopener">${esc(host(r['出典']))}</a>` : '—'}（${esc(r['確認日'] || '')} 確認）</div>
+      </article>`).join('');
+  }
+  ['uCat', 'uPref'].forEach(id => $(id).addEventListener('change', uapply));
+  uapply();
+
+  const tabs = { E: [$('tabBtnE'), $('tabE')], U: [$('tabBtnU'), $('tabU')] };
+  const show = k => Object.entries(tabs).forEach(([key, [btn, sec]]) => {
+    btn.setAttribute('aria-selected', key === k); sec.hidden = key !== k;
+  });
+  $('tabBtnE').addEventListener('click', () => { show('E'); history.replaceState(null, '', '#'); });
+  $('tabBtnU').addEventListener('click', () => { show('U'); history.replaceState(null, '', '#unlisted'); });
+  if (location.hash === '#unlisted') show('U');
 })();
 </script>
 </body>
