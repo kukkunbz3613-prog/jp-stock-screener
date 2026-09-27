@@ -146,8 +146,10 @@ REVENUE_NAMES = [re.compile(p) for p in [
 ]]
 SOFTWARE = re.compile(r"ソフトウ[エェ]ア")
 INTANGIBLE = re.compile(r"無形(固定)?資産")
-OUTFLOW = re.compile(r"支出|取得")
-EXCLUDE = re.compile(r"売却|除却|収入|償却|減損")
+OUTFLOW = re.compile(r"支出|取得|購入")
+# 売却・償却などの逆方向の項目や、有形固定資産・子会社株式と合算された項目は除く
+EXCLUDE = re.compile(r"売却|除却|収入|償却|減損|有形|子会社|事業譲受|連結の範囲")
+PARSER_VERSION = "2"  # 抽出ルールを変えたら上げる（キャッシュ済みの有報を読み直す）
 
 
 def num(v: str) -> float | None:
@@ -157,20 +159,24 @@ def num(v: str) -> float | None:
         return None
 
 
-def pick(rows, contexts, match) -> float | None:
+def pick(rows, contexts, match) -> tuple[float | None, str]:
+    """contexts の優先順に、条件に合う行の最大値とその項目名を返す。"""
     for ctx in contexts:
-        vals = [num(r[8]) for r in rows if r[2] == ctx and match(r)]
-        vals = [abs(v) for v in vals if v is not None]
+        vals = [(abs(v), r[1]) for r in rows if r[2] == ctx and match(r) and (v := num(r[8])) is not None]
         if vals:
             return max(vals)
-    return None
+    return None, ""
 
 
 def parse(rows: list[list[str]]) -> dict:
     summary = [r for r in rows if r[0].endswith("SummaryOfBusinessResults")]
+    # 連結を優先し、その中で売上に当たる項目を順に探す（持株会社の単体売上を拾わないため）
     revenue = None
-    for pat in REVENUE_NAMES:
-        revenue = pick(summary, CUR, lambda r, p=pat: bool(p.search(r[1])))
+    for ctx in CUR:
+        for pat in REVENUE_NAMES:
+            revenue, _ = pick(summary, [ctx], lambda r, p=pat: bool(p.search(r[1])))
+            if revenue:
+                break
         if revenue:
             break
 
@@ -179,16 +185,17 @@ def parse(rows: list[list[str]]) -> dict:
         return (kind.search(name) and OUTFLOW.search(name) and not EXCLUDE.search(name)
                 and ("CF" in r[0] or "キャッシュ" in name or "支出" in name))
 
-    sw = pick(rows, CUR, lambda r: is_cf(r, SOFTWARE))
-    sw_prev = pick(rows, PRIOR, lambda r: is_cf(r, SOFTWARE))
+    sw, item = pick(rows, CUR, lambda r: is_cf(r, SOFTWARE))
+    sw_prev, _ = pick(rows, PRIOR, lambda r: is_cf(r, SOFTWARE))
     basis = "ソフトウェア"
     if sw is None:
-        sw = pick(rows, CUR, lambda r: is_cf(r, INTANGIBLE))
-        sw_prev = pick(rows, PRIOR, lambda r: is_cf(r, INTANGIBLE))
+        sw, item = pick(rows, CUR, lambda r: is_cf(r, INTANGIBLE))
+        sw_prev, _ = pick(rows, PRIOR, lambda r: is_cf(r, INTANGIBLE))
         basis = "無形資産"
-    employees = pick(rows, INST, lambda r: r[0].endswith(":NumberOfEmployees"))
+    employees, _ = pick(rows, INST, lambda r: r[0].endswith(":NumberOfEmployees"))
     return {"revenue": revenue, "sw_invest": sw, "sw_prev": sw_prev,
-            "basis": basis if sw is not None else "", "employees": employees}
+            "basis": basis if sw is not None else "", "item": item.split("、")[0],
+            "employees": employees}
 
 
 def read_zip(raw: bytes) -> list[list[str]]:
@@ -205,14 +212,17 @@ def read_zip(raw: bytes) -> list[list[str]]:
 # ---------------------------------------------------------------- 取得と集計
 
 RAW_COLS = ["docID", "edinetCode", "secCode", "filerName", "periodEnd",
-            "revenue", "sw_invest", "sw_prev", "basis", "employees", "error"]
+            "revenue", "sw_invest", "sw_prev", "basis", "item", "employees", "error", "version"]
 
 
 def extract_all(api: Edinet, docs: pd.DataFrame) -> pd.DataFrame:
     latest = docs.sort_values("submitDateTime").drop_duplicates("edinetCode", keep="last")
     raw = pd.read_csv(RAW_CACHE, dtype={"docID": str, "edinetCode": str, "secCode": str}) \
         if RAW_CACHE.exists() else pd.DataFrame(columns=RAW_COLS)
-    raw = raw[raw["error"].isna() | (raw["error"] == "")]  # 失敗したものは再挑戦
+    if "version" not in raw:
+        raw["version"] = ""
+    # 失敗したものと、古い抽出ルールで読んだものは読み直す
+    raw = raw[(raw["error"].isna() | (raw["error"] == "")) & (raw["version"].astype(str) == PARSER_VERSION)]
     done = set(raw["docID"])
     todo = latest[~latest["docID"].isin(done)]
     log(f"有報: 対象 {len(latest)} 社 / 新たに取得 {len(todo)} 件")
@@ -225,6 +235,7 @@ def extract_all(api: Edinet, docs: pd.DataFrame) -> pd.DataFrame:
         try:
             row.update(parse(read_zip(api.csv_zip(doc["docID"]))))
             row["error"] = ""
+            row["version"] = PARSER_VERSION
         except Exception as e:  # noqa: BLE001 — 1社の失敗で全体を止めない
             row["error"] = f"{type(e).__name__}: {e}"[:200]
         time.sleep(0.3)
@@ -246,7 +257,7 @@ def extract_all(api: Edinet, docs: pd.DataFrame) -> pd.DataFrame:
     log(f"取得失敗 {len(errors)} 件" + (f"（例: {errors[0]['filerName']} {errors[0]['error']}）" if errors else ""))
 
     all_raw = pd.read_csv(RAW_CACHE, dtype={"docID": str, "edinetCode": str, "secCode": str})
-    return all_raw[all_raw["docID"].isin(set(latest["docID"]))]
+    return all_raw[all_raw["docID"].isin(set(latest["docID"]))].drop_duplicates("docID", keep="last")
 
 
 def load_codelist() -> pd.DataFrame:
@@ -276,6 +287,7 @@ def build(raw: pd.DataFrame, codes: pd.DataFrame) -> pd.DataFrame:
     df["code"] = df["secCode"].fillna("").astype(str).str[:4]
     df["listed"] = df["listed"].fillna("")
     df["industry"] = df["industry"].fillna("")
+    df["item"] = df["item"].fillna("") if "item" in df else ""
     return df.sort_values("ratio", ascending=False, na_position="last").reset_index(drop=True)
 
 
@@ -284,12 +296,12 @@ def build(raw: pd.DataFrame, codes: pd.DataFrame) -> pd.DataFrame:
 def write_outputs(df: pd.DataFrame, demo: bool) -> None:
     today = dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).strftime("%Y-%m-%d")
     out = df[["filerName", "code", "listed", "industry", "pref", "address", "periodEnd",
-              "sw_invest", "sw_prev", "growth", "basis", "revenue", "ratio", "employees", "per_emp"]]
+              "sw_invest", "sw_prev", "growth", "basis", "item", "revenue", "ratio", "employees", "per_emp"]]
     out.rename(columns={
         "filerName": "社名", "code": "証券コード", "listed": "上場区分", "industry": "業種",
         "pref": "都道府県", "address": "所在地", "periodEnd": "決算期末",
         "sw_invest": "ソフトウェア投資(円)", "sw_prev": "前期ソフトウェア投資(円)", "growth": "前期比",
-        "basis": "投資額の根拠", "revenue": "売上高(円)", "ratio": "投資/売上", "employees": "従業員数",
+        "basis": "投資額の根拠", "item": "投資額の項目名（有報の表記）", "revenue": "売上高(円)", "ratio": "投資/売上", "employees": "従業員数",
         "per_emp": "1人あたり投資(円)",
     }).to_csv(ROOT / "docs" / "it_invest.csv", index=False, encoding="utf-8-sig")
 
@@ -298,7 +310,7 @@ def write_outputs(df: pd.DataFrame, demo: bool) -> None:
 
     records = [[x.filerName, x.code, x.listed, x.industry, x.pref, x.periodEnd,
                 r(x.sw_invest / 1e8, 2), r(x.growth), x.basis, r(x.revenue / 1e8 if pd.notna(x.revenue) else None, 1),
-                r(x.ratio), r(x.employees, 0), r(x.per_emp / 1e4 if pd.notna(x.per_emp) else None, 1)]
+                r(x.ratio), r(x.employees, 0), r(x.per_emp / 1e4 if pd.notna(x.per_emp) else None, 1), x.item]
                for x in df.itertuples()]
     page = (ROOT / "it_template.html").read_text(encoding="utf-8")
     note = ('<p class="banner">⚠ デモモード：合成データです。実在の企業の数値ではありません。</p>' if demo else "")
@@ -323,7 +335,7 @@ def demo_data() -> pd.DataFrame:
         "industry": rng.choice(inds, n), "address": [p + "どこか1-1" for p in rng.choice(prefs, n)],
         "periodEnd": "2026-03-31", "revenue": rev, "sw_invest": sw,
         "sw_prev": sw * np.exp(rng.normal(-0.1, 0.3, n)), "basis": "ソフトウェア",
-        "employees": (rev / 3e7).round(), "edinetCode": [f"E{i:05d}" for i in range(n)],
+        "employees": (rev / 3e7).round(), "item": "ソフトウエアの取得による支出", "edinetCode": [f"E{i:05d}" for i in range(n)],
     })
 
 

@@ -61,6 +61,8 @@ a { color: var(--accent); }
   .nums { grid-template-columns: repeat(2, 1fr); margin-left: 0; }
   .meta { margin-left: 0; }
 }
+.src { color: var(--muted); font-size: .72rem; margin: 8px 0 0 3.2em; }
+@media (max-width: 560px) { .src { margin-left: 0; } }
 .more { display: block; margin: 14px auto 0; font: inherit; padding: 9px 18px; border-radius: 8px;
   border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
 .method { color: var(--text-2); font-size: .88rem; }
@@ -80,7 +82,12 @@ a { color: var(--accent); }
         <option value="10" selected>10億円以上</option><option value="30">30億円以上</option>
         <option value="100">100億円以上</option>
       </select></label>
-    <label>売上高
+    <label>売上高（下限）
+      <select id="minRev">
+        <option value="0">指定なし</option><option value="10" selected>10億円以上</option>
+        <option value="30">30億円以上</option><option value="100">100億円以上</option>
+      </select></label>
+    <label>売上高（上限）
       <select id="maxRev">
         <option value="">指定なし</option><option value="100">100億円以下</option>
         <option value="300">300億円以下</option><option value="1000" selected>1,000億円以下</option>
@@ -114,7 +121,7 @@ a { color: var(--accent); }
 <script id="data" type="application/json">%%DATA%%</script>
 <script>
 (() => {
-  // [社名, コード, 上場区分, 業種, 都道府県, 決算期末, 投資(億), 前期比, 根拠, 売上(億), 割合, 従業員, 1人あたり(万)]
+  // [社名, コード, 上場区分, 業種, 都道府県, 決算期末, 投資(億), 前期比, 根拠, 売上(億), 割合, 従業員, 1人あたり(万), 項目名]
   const rows = JSON.parse(document.getElementById('data').textContent);
   const $ = id => document.getElementById(id);
   const uniq = i => [...new Set(rows.map(r => r[i]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ja'));
@@ -130,11 +137,11 @@ a { color: var(--accent); }
   let shown = PAGE, current = [];
 
   function apply() {
-    const minInv = +$('minInv').value, maxRev = $('maxRev').value ? +$('maxRev').value : Infinity;
+    const minInv = +$('minInv').value, minRev = +$('minRev').value, maxRev = $('maxRev').value ? +$('maxRev').value : Infinity;
     const ind = $('ind').value, pref = $('pref').value, listed = $('listed').value;
     const q = $('q').value.trim();
     const key = { ratio: 10, inv: 6, growth: 7, emp: 12 }[$('sort').value];
-    current = rows.filter(r => r[6] >= minInv && (r[9] == null ? maxRev === Infinity : r[9] <= maxRev)
+    current = rows.filter(r => r[6] >= minInv && (r[9] == null ? maxRev === Infinity && minRev === 0 : r[9] >= minRev && r[9] <= maxRev)
       && (!ind || r[3] === ind) && (!pref || r[4] === pref) && (!listed || r[2] === listed)
       && (!q || r[0].includes(q)));
     current.sort((a, b) => (b[key] ?? -Infinity) - (a[key] ?? -Infinity));
@@ -152,17 +159,18 @@ a { color: var(--accent); }
           <span class="tag">${esc(r[2] || '—')}${r[1] ? ' ' + esc(r[1]) : ''}</span></div>
         <div class="meta">${esc(r[3] || '業種不明')} ・ ${esc(r[4] || '所在地不明')} ・ ${esc(r[5] || '')}期</div>
         <dl class="nums">
-          <div><dt>ソフトウェア投資${r[8] === '無形資産' ? '（無形資産）' : ''}</dt><dd>${fmt(r[6])}億円</dd></div>
+          <div><dt>ソフトウェア投資${r[8] === '無形資産' ? '（無形資産）' : ''}</dt><dd title="${esc(r[13] || '')}">${fmt(r[6])}億円</dd></div>
           <div><dt>売上に対する割合</dt><dd>${pct(r[10])}</dd>
             <div class="meter"><i style="width:${Math.min(100, (r[10] || 0) / maxRatio * 100)}%"></i></div></div>
           <div><dt>売上高</dt><dd>${fmt(r[9], 0)}億円</dd></div>
           <div><dt>前期比 / 1人あたり</dt><dd><span class="${r[7] > 0 ? 'pos' : r[7] < 0 ? 'neg' : ''}">${pct(r[7], true)}</span> / ${fmt(r[12], 0)}万円</dd></div>
         </dl>
+        <div class="src">根拠：${esc(r[13] || '—')}</div>
       </article>`).join('');
     $('more').hidden = shown >= current.length;
   }
 
-  ['minInv', 'maxRev', 'ind', 'pref', 'listed', 'sort'].forEach(id => $(id).addEventListener('change', apply));
+  ['minInv', 'minRev', 'maxRev', 'ind', 'pref', 'listed', 'sort'].forEach(id => $(id).addEventListener('change', apply));
   $('q').addEventListener('input', apply);
   $('more').addEventListener('click', () => { shown += PAGE; render(); });
   apply();
