@@ -1,0 +1,36 @@
+name: fetch-history
+
+on:
+  workflow_dispatch:
+    inputs:
+      codes:
+        description: "取得する銘柄（スペース区切り、例: 2327.T 1306.T）"
+        default: "2327.T 1306.T"
+  push:
+    branches: [main]
+    paths:
+      - "tools/fetch_history.py"
+      - "tools/history_codes.txt"
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python tools/fetch_history.py ${{ github.event.inputs.codes || '' }} $(cat tools/history_codes.txt 2>/dev/null)
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Price history $(TZ=Asia/Tokyo date +%F)"
+          for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
