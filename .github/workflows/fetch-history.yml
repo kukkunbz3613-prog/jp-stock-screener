@@ -11,6 +11,7 @@ on:
     paths:
       - "tools/fetch_history.py"
       - "tools/history_codes.txt"
+      - "tools/fetch_valuation.py"
 
 permissions:
   contents: write
@@ -26,11 +27,12 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python tools/fetch_history.py ${{ github.event.inputs.codes || '' }} $(cat tools/history_codes.txt 2>/dev/null)
+      - run: python tools/fetch_valuation.py
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history
+          git add data/history data/valuation.csv
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Price history $(TZ=Asia/Tokyo date +%F)"
           for i in 1 2 3; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
