@@ -1,0 +1,304 @@
+{
+  "checked": "2026-10-06",
+  "industry": {
+    "points": [
+      "IDC Japan は国内ITサービス市場が2025〜2030年に年平均6.2%で伸び、2030年に10兆2541億円に達すると予測（2025年は前年比7.3%増の7兆5663億円）",
+      "JEITA によると2024年度のSI開発は前年度比8.3%増の3兆8425億円、ソフトウェアは12.0%増",
+      "IT人材不足を背景に、システム技術者の契約単価は2026年も上昇が続いている（ITR）",
+      "一方、2026年2月に AI エージェントが業務ソフトやITサービスを代替するとの懸念（いわゆる「SaaSの死」）からソフトウェア・IT株が世界的に急落し、国内でも富士通・NEC・野村総研などが売られた"
+    ],
+    "sources": [
+      [
+        "IDC 国内ITサービス市場予測（アイマガジン, 2026/3）",
+        "https://www.imagazine.co.jp/idc-report-on-20260309/"
+      ],
+      [
+        "JEITA ソリューションサービスの市場動向（2024/10）",
+        "https://home.jeita.or.jp/solution/report/file/241016_1030-CEATEC2024DL.pdf"
+      ],
+      [
+        "ITR システム技術者の契約単価と需要動向2026",
+        "https://www.itr.co.jp/report-library/r-22607u"
+      ],
+      [
+        "日本経済新聞：米業務ソフト株急落、「SaaSの死」警戒再び",
+        "https://www.nikkei.com/article/DGXZQOGN03CFK0T00C26A2000000/"
+      ],
+      [
+        "日本経済新聞：沈む世界のIT株 米セールスフォースや野村総研",
+        "https://www.nikkei.com/article/DGXZQOUB030V10T00C26A3000000/"
+      ]
+    ]
+  },
+  "companies": [
+    {
+      "code": "4307.T",
+      "name": "野村総合研究所",
+      "strength": "A",
+      "thesis": [
+        "新中期経営計画（2026-2028）で2029年3月期に営業利益2,000億円・営業利益率21.1%を目標",
+        "長期ビジョン「NRI Group Vision 2030」で売上1兆円超・営業利益率20%以上を掲げる",
+        "営業利益率は約20%と国内SIで最高水準。アナリスト14人の平均推奨は「強気」寄り"
+      ],
+      "risks": [
+        "2026年3月に AI 代替懸念から世界のIT株とともに売られた。懸念が続けば評価倍率は戻りにくい",
+        "PBR は7倍台と絶対水準では割安ではない（割安感は自社の過去水準・成長性との比較）"
+      ],
+      "sources": [
+        [
+          "NRIグループ中期経営計画(2026-2028)を策定（適時開示）",
+          "https://finance.biggo.jp/news/jpx_tdnet_140120260423509071"
+        ],
+        [
+          "中期経営計画 開示資料（2026/4/24）",
+          "https://ir.nri.com/jp/ir/news/auto_20260423509071/pdfFile.pdf"
+        ],
+        [
+          "日本経済新聞：沈む世界のIT株 米セールスフォースや野村総研",
+          "https://www.nikkei.com/article/DGXZQOUB030V10T00C26A3000000/"
+        ]
+      ],
+      "suspect": [
+        "trailingPE",
+        "returnOnEquity"
+      ]
+    },
+    {
+      "code": "6701.T",
+      "name": "NEC",
+      "strength": "A",
+      "thesis": [
+        "2030中期経営計画（2026/5/12発表）で、2030年度に Non-GAAP 営業利益を2025年度比2倍以上、利益率15%以上、EPS 年平均15%以上の成長を目標",
+        "2025年度の実績（売上収益3兆5,827億円、Non-GAAP 営業利益3,972億円）は前中計の目標を上回って着地",
+        "アナリスト13人の平均推奨は「強気」寄りで、平均目標株価は現在値を大きく上回る"
+      ],
+      "risks": [
+        "2026年2月の「SaaSの死」懸念で一時10%超下落。AI によるITサービス需要の代替懸念が重し",
+        "利益倍増は AI・安全保障など新領域の成長が前提"
+      ],
+      "sources": [
+        [
+          "クラウド Watch：NEC、2030中期経営計画を発表",
+          "https://cloud.watch.impress.co.jp/docs/news/2108039.html"
+        ],
+        [
+          "日経クロステック：NECが新中期経営計画、2030年度に営業利益を倍増へ",
+          "https://xtech.nikkei.com/atcl/nxt/news/24/03227/"
+        ],
+        [
+          "J.P.モルガン・アセット：AIバブルや「SaaSの死」は大丈夫?",
+          "https://am.jpmorgan.com/jp/ja/asset-management/per/insights/market-insights/on-the-minds-of-investors/strategist-views-2026q2-06/"
+        ]
+      ]
+    },
+    {
+      "code": "3697.T",
+      "name": "SHIFT",
+      "strength": "B",
+      "thesis": [
+        "中期成長戦略「SHIFT3000」で2028〜30年に売上高3,000億円を目標。新中計「SHIFT2028」で生成AI×ストック型ビジネスへ転換",
+        "2026年8月期の業績予想は売上高1,500億円・調整後営業利益200億円",
+        "株価は3年前の高値から6割超下落しており、売上成長（約3割）に比べ評価の落ち込みが大きい"
+      ],
+      "risks": [
+        "エンジニアの稼働率低下で2025年9〜11月期は営業20%減益、株価は昨年来安値を更新（2026/1）",
+        "売上見通しが市場予想に届かず急落した経緯（2025/10）。テスト・品質保証は AI で代替されやすいとの見方"
+      ],
+      "sources": [
+        [
+          "SHIFT 中長期戦略（IR）",
+          "https://www.shiftinc.jp/ir/management/midterm/"
+        ],
+        [
+          "日本経済新聞：SHIFT株価、昨年来安値 9〜11月営業減益",
+          "https://www.nikkei.com/article/DGXZQOFL1516C0V10C26A1000000/"
+        ],
+        [
+          "日本経済新聞：SHIFT株価8%安 26年8月期売上高見通しが市場予想に届かず",
+          "https://www.nikkei.com/article/DGXZQOFL1517A0V11C25A0000000/"
+        ]
+      ]
+    },
+    {
+      "code": "3923.T",
+      "name": "ラクス",
+      "strength": "B",
+      "thesis": [
+        "2026年3月期中間期は売上高25.1%増・営業利益65.4%増と高成長が継続",
+        "次期中期経営計画（2027年3月期〜2029年3月期）で「Rule of 50」（売上成長率＋営業利益率≧50%）を目標",
+        "営業利益率は3割超と SaaS として高収益。アナリスト8人の平均目標株価は現在値を上回る"
+      ],
+      "risks": [
+        "「SaaSの死」懸念の直撃を受けやすい業態",
+        "中小企業向けが中心で、AI を取り込んだ新興サービスとの価格競争リスク"
+      ],
+      "sources": [
+        [
+          "ラクス 2026年3月期 第2四半期 決算説明資料",
+          "https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251114/20251114503093.pdf"
+        ],
+        [
+          "ラクス トップメッセージ（IR）",
+          "https://www.rakus.co.jp/ir/top-message/"
+        ],
+        [
+          "IFIS株予報：ラクス レーティング・目標株価",
+          "https://kabuyoho.ifis.co.jp/index.php?action=tp1&sa=report_pbr&bcode=3923"
+        ]
+      ],
+      "suspect": [
+        "revenueGrowth"
+      ]
+    },
+    {
+      "code": "3626.T",
+      "name": "TIS",
+      "strength": "B",
+      "thesis": [
+        "中期経営計画（2024-2026）で売上高6,200億円、営業利益率13.1%、ROE16%超、EPS 年平均10%超の成長を目標",
+        "直近の利益成長は2割台で、PER は同業の中央値（約22倍）を下回る",
+        "株価は52週高値から2割超下落"
+      ],
+      "risks": [
+        "アナリスト10人の平均推奨は「中立」寄りで、平均目標株価までの余地は小さい",
+        "2026年3月期の ROE は15.3%から14.0%に低下"
+      ],
+      "sources": [
+        [
+          "TISインテックグループ中期経営計画（2024-2026）",
+          "https://www.tisi.jp/documents/jp/ir/finance/meeting/240508_2.pdf"
+        ],
+        [
+          "TIS 統合報告書 中期経営計画の概要",
+          "https://www.tisi.jp/documents/jp/ir/finance/annual_report/ar2025_04.pdf"
+        ],
+        [
+          "TIS 2026年3月期 決算説明資料",
+          "https://www.tisi.jp/documents/jp/ir/finance_meeting260508_1.pdf"
+        ]
+      ]
+    },
+    {
+      "code": "9759.T",
+      "name": "NSD",
+      "strength": "B",
+      "thesis": [
+        "2026年3月期は売上高1,178億円・営業利益191億円（決算短信）と成長が続く",
+        "ROE は約20%、営業利益率は約14%と高収益なのに、PER は17倍台",
+        "株価は52週高値から1割超下落"
+      ],
+      "risks": [
+        "カバーするアナリストが1人と少なく、市場の注目度が低い（見直されるきっかけが必要）",
+        "新しい中期経営計画の数値目標は未確認"
+      ],
+      "sources": [
+        [
+          "NSD 2026年3月期 決算短信",
+          "https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20260508/20260507518821.pdf"
+        ],
+        [
+          "NSD 中期経営計画（2022年3月期〜2026年3月期）",
+          "https://www.nsd.co.jp/ir/irmaterial/pdf/MidtermManagementPlan_20210510_JP.pdf"
+        ]
+      ]
+    },
+    {
+      "code": "4776.T",
+      "name": "サイボウズ",
+      "strength": "B",
+      "thesis": [
+        "2026年12月期上期は売上高16.1%増、主力の kintone は19.1%増。契約社数は3.5万社を突破",
+        "通期の売上高予想は421.7億円（12.7%増）。株価下落局面で自己株式を取得",
+        "社長は「AIは脅威にあらず」と表明し、kintone AI を正式リリース"
+      ],
+      "risks": [
+        "2026年2月の「Anthropicショック」で大きく下落。SaaS 代替懸念が続く限り評価は戻りにくい",
+        "カバーするアナリストが少ない"
+      ],
+      "sources": [
+        [
+          "ログミーファイナンス：サイボウズ IRグループ面談",
+          "https://finance.logmi.jp/articles/385668"
+        ],
+        [
+          "日本経済新聞：サイボウズ青野社長「SaaSの死」波及懸念も好機",
+          "https://www.nikkei.com/article/DGXZQOUC25A1J0V20C26A2000000/"
+        ]
+      ]
+    },
+    {
+      "code": "2317.T",
+      "name": "システナ",
+      "strength": "C",
+      "thesis": [
+        "ROE 約31%・営業利益率 約16%と高収益なのに、PER は13倍台と同業で最も低い水準",
+        "アナリストのコンセンサス目標株価（530円）は現在値を上回る"
+      ],
+      "risks": [
+        "中期経営計画の数値目標を確認できていない",
+        "売上成長は一桁台。大手証券が目標株価を490円に引き下げ"
+      ],
+      "sources": [
+        [
+          "株予報Pro：システナ 理論株価・目標株価",
+          "https://kabuyoho.jp/sp/reportTarget?bcode=2317"
+        ],
+        [
+          "IFIS株予報：システナ レーティング・目標株価",
+          "https://kabuyoho.ifis.co.jp/index.php?sa=report_pbr&bcode=2317"
+        ]
+      ]
+    },
+    {
+      "code": "2326.T",
+      "name": "デジタルアーツ",
+      "strength": "C",
+      "thesis": [
+        "営業利益率は4割近くと高収益。サイバー攻撃の増加と AI 時代のガバナンス需要が追い風",
+        "株価は52週高値から3割超下落"
+      ],
+      "risks": [
+        "2026年3月期の営業利益は47.9億円で計画（56.1億円）を下振れ、2027年3月期の計画も下振れてストップ安（2026/5）。低迷には業績上の理由がある",
+        "中期計画の達成は需要拡大の継続が前提"
+      ],
+      "sources": [
+        [
+          "株探：デジタルアーツ ストップ安売り気配、27年3月期業績は従来計画を下振れ",
+          "https://kabutan.jp/news/marketnews/?b=n202605080645"
+        ],
+        [
+          "みんかぶ：デジタルアーツ 決算短信AI要約",
+          "https://minkabu.jp/stock/2326/settlement_summary"
+        ]
+      ]
+    },
+    {
+      "code": "2327.T",
+      "name": "日鉄ソリューションズ（参考）",
+      "strength": "参考",
+      "thesis": [
+        "NSSOL 2030ビジョンで2030年代早期に売上5,000億円・営業利益1,000億円・営業利益率20%・ROE15%を目標",
+        "売上成長は13%と同業上位。PBR は同業で最も低い水準",
+        "Oracle Alloy・電通総研との協業・Anthropic との提携など、人月型からの転換策を相次いで発表"
+      ],
+      "risks": [
+        "条件（アナリスト平均目標が現在値を上回る）を満たさないため参考として掲載。アナリストの平均推奨は同業で最も慎重",
+        "営業利益率（約10%）・ROE（約12%）と目標との差が大きい。親子上場"
+      ],
+      "sources": [
+        [
+          "日鉄ソリューションズ NSSOL 2030ビジョン",
+          "https://www.nssol.nipponsteel.com/corporate/2030vision/"
+        ],
+        [
+          "日刊鉄鋼新聞：30年代に営業益1000億円へ ビジョン公表",
+          "https://www.japanmetal.com/news-t20240430134487.html"
+        ],
+        [
+          "IFIS株予報：NSSOL レーティング・目標株価",
+          "https://kabuyoho.ifis.co.jp/index.php?action=tp1&bcode=2327&sa=report_pbr"
+        ]
+      ]
+    }
+  ]
+}

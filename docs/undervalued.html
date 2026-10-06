@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>割安候補のIT・SI企業</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f6f4; --surface: #fcfcfb; --border: #e4e3de;
+  --text: #0b0b0b; --text-2: #52514e; --muted: #86857f; --accent: #2a78d6;
+  --pos: #c8321f; --neg: #1f6fd1;
+  --a: #1d7a4f; --a-bg: #e3f3ea; --b: #8a5a00; --b-bg: #fbf0d9; --c: #6b6a65; --c-bg: #ecebe6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #2e2d2b;
+    --text: #fff; --text-2: #c3c2b7; --muted: #8e8d86; --accent: #3987e5;
+    --pos: #ff7a66; --neg: #6aa8ff;
+    --a: #6fd3a3; --a-bg: #16301f; --b: #f0c36a; --b-bg: #33290f; --c: #b9b8b0; --c-bg: #2a2a28;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #2e2d2b;
+  --text: #fff; --text-2: #c3c2b7; --muted: #8e8d86; --accent: #3987e5;
+  --pos: #ff7a66; --neg: #6aa8ff;
+  --a: #6fd3a3; --a-bg: #16301f; --b: #f0c36a; --b-bg: #33290f; --c: #b9b8b0; --c-bg: #2a2a28;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.6 system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+main { max-width: 1000px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.15rem; margin: 32px 0 10px; }
+h3 { font-size: .85rem; margin: 0 0 4px; color: var(--text-2); }
+a { color: var(--accent); }
+.sub { color: var(--text-2); margin: 0 0 16px; }
+.box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.box ul { margin: 6px 0 0; padding-left: 20px; }
+.box li { margin: 3px 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .82rem; color: var(--text-2); margin: 10px 0 0; }
+.filter { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+.filter button { font: inherit; font-size: .85rem; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-2); }
+.filter button[aria-pressed="true"] { border-color: var(--accent); color: var(--text); }
+.list { display: grid; gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.name { font-weight: 700; font-size: 1.1rem; }
+.code { color: var(--muted); font-size: .85rem; }
+.badge { font-size: .75rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.sA { color: var(--a); background: var(--a-bg); } .sB { color: var(--b); background: var(--b-bg); }
+.sC, .s参考 { color: var(--c); background: var(--c-bg); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 14px; margin: 10px 0 12px; }
+.kpis dt { color: var(--muted); font-size: .72rem; }
+.kpis dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pos { color: var(--pos); } .neg { color: var(--neg); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+.cols ul { margin: 0; padding-left: 18px; font-size: .9rem; }
+.cols li { margin: 3px 0; }
+details { margin-top: 10px; font-size: .85rem; }
+summary { cursor: pointer; color: var(--accent); }
+.src { margin: 6px 0 0; padding-left: 18px; }
+.note { color: var(--muted); font-size: .82rem; }
+.warn { grid-column: 1 / -1; color: var(--muted); font-size: .72rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>割安候補のIT・SI企業</h1>
+  <p class="sub">株価は低迷しているが、業界の成長性・事業内容・中期経営計画からみて過小評価の可能性がある企業 9社
+    ・ <a href="./">株価ランキング</a> ・ <a href="it-invest.html">IT投資が多い企業</a></p>
+
+  <div class="box">
+    <h3>選び方</h3>
+    <ul>
+      <li>IT・SI業界の上場 36 社から、<b>株価が低迷</b>（1年の騰落がマイナス、または52週高値から15%以上下落）し、<b>売上が伸びている</b>（減収の会社は除外）企業を抽出。原則として<b>アナリストの平均目標株価が現在値を上回る</b>ことも条件にしました</li>
+      <li>そのうえで中期経営計画・決算・報道を調べ、根拠とリスクを出典つきでまとめました（調査日 2026-10-06）</li>
+      <li>同じ期間に TOPIX は +36.3%。IT・SI業界の PER の中央値は 19.5倍</li>
+    </ul>
+    <div class="legend"><span><span class="badge sA">根拠 強</span> 中計の数値目標・実績・アナリスト評価がそろう</span>
+      <span><span class="badge sB">根拠 中</span> 一部が未確認、または目立つリスクあり</span>
+      <span><span class="badge sC">根拠 弱</span> 低迷に業績上の理由がある、または情報が不足</span></div>
+  </div>
+
+  <h2>業界の状況</h2>
+  <div class="box"><ul><li>IDC Japan は国内ITサービス市場が2025〜2030年に年平均6.2%で伸び、2030年に10兆2541億円に達すると予測（2025年は前年比7.3%増の7兆5663億円）</li><li>JEITA によると2024年度のSI開発は前年度比8.3%増の3兆8425億円、ソフトウェアは12.0%増</li><li>IT人材不足を背景に、システム技術者の契約単価は2026年も上昇が続いている（ITR）</li><li>一方、2026年2月に AI エージェントが業務ソフトやITサービスを代替するとの懸念（いわゆる「SaaSの死」）からソフトウェア・IT株が世界的に急落し、国内でも富士通・NEC・野村総研などが売られた</li></ul>
+    <details><summary>出典</summary><ul class="src"><li><a href='https://www.imagazine.co.jp/idc-report-on-20260309/' target='_blank' rel='noopener'>IDC 国内ITサービス市場予測（アイマガジン, 2026/3）</a></li><li><a href='https://home.jeita.or.jp/solution/report/file/241016_1030-CEATEC2024DL.pdf' target='_blank' rel='noopener'>JEITA ソリューションサービスの市場動向（2024/10）</a></li><li><a href='https://www.itr.co.jp/report-library/r-22607u' target='_blank' rel='noopener'>ITR システム技術者の契約単価と需要動向2026</a></li><li><a href='https://www.nikkei.com/article/DGXZQOGN03CFK0T00C26A2000000/' target='_blank' rel='noopener'>日本経済新聞：米業務ソフト株急落、「SaaSの死」警戒再び</a></li><li><a href='https://www.nikkei.com/article/DGXZQOUB030V10T00C26A3000000/' target='_blank' rel='noopener'>日本経済新聞：沈む世界のIT株 米セールスフォースや野村総研</a></li></ul></details></div>
+
+  <h2>候補一覧</h2>
+  <div class="filter" role="group" aria-label="根拠の強さで絞り込み">
+    <button aria-pressed="true" data-f="">すべて</button><button aria-pressed="false" data-f="A">根拠 強</button>
+    <button aria-pressed="false" data-f="B">根拠 中</button><button aria-pressed="false" data-f="C">根拠 弱・参考</button>
+  </div>
+  <div class="list">
+    <article class="card" data-strength="A">
+      <div class="head"><div><span class="name">野村総合研究所</span> <span class="code">4307</span></div>
+        <span class="badge sA">根拠 強</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥5,090</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-9.9%（-46.2%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-19.0%</dd></div><div><dt>PER（実績）</dt><dd class=''>—</dd></div><div><dt>PBR</dt><dd class=''>7.63倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>— / 19.7%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+7.5%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+17.4%（14人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>1.36</dd></div><div class='warn'>「—」の一部はデータ提供元の値が異常なため非表示（要確認）</div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>新中期経営計画（2026-2028）で2029年3月期に営業利益2,000億円・営業利益率21.1%を目標</li><li>長期ビジョン「NRI Group Vision 2030」で売上1兆円超・営業利益率20%以上を掲げる</li><li>営業利益率は約20%と国内SIで最高水準。アナリスト14人の平均推奨は「強気」寄り</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>2026年3月に AI 代替懸念から世界のIT株とともに売られた。懸念が続けば評価倍率は戻りにくい</li><li>PBR は7倍台と絶対水準では割安ではない（割安感は自社の過去水準・成長性との比較）</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://finance.biggo.jp/news/jpx_tdnet_140120260423509071' target='_blank' rel='noopener'>NRIグループ中期経営計画(2026-2028)を策定（適時開示）</a></li><li><a href='https://ir.nri.com/jp/ir/news/auto_20260423509071/pdfFile.pdf' target='_blank' rel='noopener'>中期経営計画 開示資料（2026/4/24）</a></li><li><a href='https://www.nikkei.com/article/DGXZQOUB030V10T00C26A3000000/' target='_blank' rel='noopener'>日本経済新聞：沈む世界のIT株 米セールスフォースや野村総研</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="A">
+      <div class="head"><div><span class="name">NEC</span> <span class="code">6701</span></div>
+        <span class="badge sA">根拠 強</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥4,927</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='pos'>+4.7%（-31.6%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-18.1%</dd></div><div><dt>PER（実績）</dt><dd class=''>24.3倍</dd></div><div><dt>PBR</dt><dd class=''>2.93倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>14.2% / 7.2%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+14.5%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+27.3%（13人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>1.46</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>2030中期経営計画（2026/5/12発表）で、2030年度に Non-GAAP 営業利益を2025年度比2倍以上、利益率15%以上、EPS 年平均15%以上の成長を目標</li><li>2025年度の実績（売上収益3兆5,827億円、Non-GAAP 営業利益3,972億円）は前中計の目標を上回って着地</li><li>アナリスト13人の平均推奨は「強気」寄りで、平均目標株価は現在値を大きく上回る</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>2026年2月の「SaaSの死」懸念で一時10%超下落。AI によるITサービス需要の代替懸念が重し</li><li>利益倍増は AI・安全保障など新領域の成長が前提</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://cloud.watch.impress.co.jp/docs/news/2108039.html' target='_blank' rel='noopener'>クラウド Watch：NEC、2030中期経営計画を発表</a></li><li><a href='https://xtech.nikkei.com/atcl/nxt/news/24/03227/' target='_blank' rel='noopener'>日経クロステック：NECが新中期経営計画、2030年度に営業利益を倍増へ</a></li><li><a href='https://am.jpmorgan.com/jp/ja/asset-management/per/insights/market-insights/on-the-minds-of-investors/strategist-views-2026q2-06/' target='_blank' rel='noopener'>J.P.モルガン・アセット：AIバブルや「SaaSの死」は大丈夫?</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="B">
+      <div class="head"><div><span class="name">SHIFT</span> <span class="code">3697</span></div>
+        <span class="badge sB">根拠 中</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥879</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-31.3%（-67.6%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-33.2%</dd></div><div><dt>PER（実績）</dt><dd class=''>27.3倍</dd></div><div><dt>PBR</dt><dd class=''>5.84倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>17.2% / 10.5%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+29.9%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+12.0%（7人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>—</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>中期成長戦略「SHIFT3000」で2028〜30年に売上高3,000億円を目標。新中計「SHIFT2028」で生成AI×ストック型ビジネスへ転換</li><li>2026年8月期の業績予想は売上高1,500億円・調整後営業利益200億円</li><li>株価は3年前の高値から6割超下落しており、売上成長（約3割）に比べ評価の落ち込みが大きい</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>エンジニアの稼働率低下で2025年9〜11月期は営業20%減益、株価は昨年来安値を更新（2026/1）</li><li>売上見通しが市場予想に届かず急落した経緯（2025/10）。テスト・品質保証は AI で代替されやすいとの見方</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://www.shiftinc.jp/ir/management/midterm/' target='_blank' rel='noopener'>SHIFT 中長期戦略（IR）</a></li><li><a href='https://www.nikkei.com/article/DGXZQOFL1516C0V10C26A1000000/' target='_blank' rel='noopener'>日本経済新聞：SHIFT株価、昨年来安値 9〜11月営業減益</a></li><li><a href='https://www.nikkei.com/article/DGXZQOFL1517A0V11C25A0000000/' target='_blank' rel='noopener'>日本経済新聞：SHIFT株価8%安 26年8月期売上高見通しが市場予想に届かず</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="B">
+      <div class="head"><div><span class="name">ラクス</span> <span class="code">3923</span></div>
+        <span class="badge sB">根拠 中</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥1,047</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-21.0%（-57.3%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-23.8%</dd></div><div><dt>PER（実績）</dt><dd class=''>28.4倍</dd></div><div><dt>PBR</dt><dd class=''>9.67倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>81.3% / 33.5%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class=''>—</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+16.7%（8人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>2.12</dd></div><div class='warn'>「—」の一部はデータ提供元の値が異常なため非表示（要確認）</div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>2026年3月期中間期は売上高25.1%増・営業利益65.4%増と高成長が継続</li><li>次期中期経営計画（2027年3月期〜2029年3月期）で「Rule of 50」（売上成長率＋営業利益率≧50%）を目標</li><li>営業利益率は3割超と SaaS として高収益。アナリスト8人の平均目標株価は現在値を上回る</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>「SaaSの死」懸念の直撃を受けやすい業態</li><li>中小企業向けが中心で、AI を取り込んだ新興サービスとの価格競争リスク</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251114/20251114503093.pdf' target='_blank' rel='noopener'>ラクス 2026年3月期 第2四半期 決算説明資料</a></li><li><a href='https://www.rakus.co.jp/ir/top-message/' target='_blank' rel='noopener'>ラクス トップメッセージ（IR）</a></li><li><a href='https://kabuyoho.ifis.co.jp/index.php?action=tp1&amp;sa=report_pbr&amp;bcode=3923' target='_blank' rel='noopener'>IFIS株予報：ラクス レーティング・目標株価</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="B">
+      <div class="head"><div><span class="name">TIS</span> <span class="code">3626</span></div>
+        <span class="badge sB">根拠 中</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥4,011</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-17.3%（-53.6%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-23.1%</dd></div><div><dt>PER（実績）</dt><dd class=''>19.9倍</dd></div><div><dt>PBR</dt><dd class=''>2.88倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>15.4% / 12.2%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+7.0%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+4.3%（10人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>2.80</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>中期経営計画（2024-2026）で売上高6,200億円、営業利益率13.1%、ROE16%超、EPS 年平均10%超の成長を目標</li><li>直近の利益成長は2割台で、PER は同業の中央値（約22倍）を下回る</li><li>株価は52週高値から2割超下落</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>アナリスト10人の平均推奨は「中立」寄りで、平均目標株価までの余地は小さい</li><li>2026年3月期の ROE は15.3%から14.0%に低下</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://www.tisi.jp/documents/jp/ir/finance/meeting/240508_2.pdf' target='_blank' rel='noopener'>TISインテックグループ中期経営計画（2024-2026）</a></li><li><a href='https://www.tisi.jp/documents/jp/ir/finance/annual_report/ar2025_04.pdf' target='_blank' rel='noopener'>TIS 統合報告書 中期経営計画の概要</a></li><li><a href='https://www.tisi.jp/documents/jp/ir/finance_meeting260508_1.pdf' target='_blank' rel='noopener'>TIS 2026年3月期 決算説明資料</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="B">
+      <div class="head"><div><span class="name">NSD</span> <span class="code">9759</span></div>
+        <span class="badge sB">根拠 中</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥2,962</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-13.1%（-49.5%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-15.6%</dd></div><div><dt>PER（実績）</dt><dd class=''>17.4倍</dd></div><div><dt>PBR</dt><dd class=''>3.28倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>20.3% / 14.0%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+9.6%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+31.0%（1人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>1.00</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>2026年3月期は売上高1,178億円・営業利益191億円（決算短信）と成長が続く</li><li>ROE は約20%、営業利益率は約14%と高収益なのに、PER は17倍台</li><li>株価は52週高値から1割超下落</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>カバーするアナリストが1人と少なく、市場の注目度が低い（見直されるきっかけが必要）</li><li>新しい中期経営計画の数値目標は未確認</li></ul></section>
+      </div>
+      <details><summary>出典（2件）</summary><ul class="src"><li><a href='https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20260508/20260507518821.pdf' target='_blank' rel='noopener'>NSD 2026年3月期 決算短信</a></li><li><a href='https://www.nsd.co.jp/ir/irmaterial/pdf/MidtermManagementPlan_20210510_JP.pdf' target='_blank' rel='noopener'>NSD 中期経営計画（2022年3月期〜2026年3月期）</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="B">
+      <div class="head"><div><span class="name">サイボウズ</span> <span class="code">4776</span></div>
+        <span class="badge sB">根拠 中</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥2,960</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-14.7%（-51.0%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-14.0%</dd></div><div><dt>PER（実績）</dt><dd class=''>17.8倍</dd></div><div><dt>PBR</dt><dd class=''>7.67倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>48.2% / 28.1%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+15.3%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+52.0%（1人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>1.00</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>2026年12月期上期は売上高16.1%増、主力の kintone は19.1%増。契約社数は3.5万社を突破</li><li>通期の売上高予想は421.7億円（12.7%増）。株価下落局面で自己株式を取得</li><li>社長は「AIは脅威にあらず」と表明し、kintone AI を正式リリース</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>2026年2月の「Anthropicショック」で大きく下落。SaaS 代替懸念が続く限り評価は戻りにくい</li><li>カバーするアナリストが少ない</li></ul></section>
+      </div>
+      <details><summary>出典（2件）</summary><ul class="src"><li><a href='https://finance.logmi.jp/articles/385668' target='_blank' rel='noopener'>ログミーファイナンス：サイボウズ IRグループ面談</a></li><li><a href='https://www.nikkei.com/article/DGXZQOUC25A1J0V20C26A2000000/' target='_blank' rel='noopener'>日本経済新聞：サイボウズ青野社長「SaaSの死」波及懸念も好機</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="C">
+      <div class="head"><div><span class="name">システナ</span> <span class="code">2317</span></div>
+        <span class="badge sC">根拠 弱</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥424</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-13.8%（-50.1%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-18.0%</dd></div><div><dt>PER（実績）</dt><dd class=''>13.4倍</dd></div><div><dt>PBR</dt><dd class=''>3.82倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>31.0% / 16.1%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+5.5%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+15.6%（1人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>—</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>ROE 約31%・営業利益率 約16%と高収益なのに、PER は13倍台と同業で最も低い水準</li><li>アナリストのコンセンサス目標株価（530円）は現在値を上回る</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>中期経営計画の数値目標を確認できていない</li><li>売上成長は一桁台。大手証券が目標株価を490円に引き下げ</li></ul></section>
+      </div>
+      <details><summary>出典（2件）</summary><ul class="src"><li><a href='https://kabuyoho.jp/sp/reportTarget?bcode=2317' target='_blank' rel='noopener'>株予報Pro：システナ 理論株価・目標株価</a></li><li><a href='https://kabuyoho.ifis.co.jp/index.php?sa=report_pbr&amp;bcode=2317' target='_blank' rel='noopener'>IFIS株予報：システナ レーティング・目標株価</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="C">
+      <div class="head"><div><span class="name">デジタルアーツ</span> <span class="code">2326</span></div>
+        <span class="badge sC">根拠 弱</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥5,360</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='neg'>-29.5%（-65.8%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-31.6%</dd></div><div><dt>PER（実績）</dt><dd class=''>21.6倍</dd></div><div><dt>PBR</dt><dd class=''>3.94倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>20.4% / 38.3%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+19.4%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='pos'>+41.8%（1人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>—</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>営業利益率は4割近くと高収益。サイバー攻撃の増加と AI 時代のガバナンス需要が追い風</li><li>株価は52週高値から3割超下落</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>2026年3月期の営業利益は47.9億円で計画（56.1億円）を下振れ、2027年3月期の計画も下振れてストップ安（2026/5）。低迷には業績上の理由がある</li><li>中期計画の達成は需要拡大の継続が前提</li></ul></section>
+      </div>
+      <details><summary>出典（2件）</summary><ul class="src"><li><a href='https://kabutan.jp/news/marketnews/?b=n202605080645' target='_blank' rel='noopener'>株探：デジタルアーツ ストップ安売り気配、27年3月期業績は従来計画を下振れ</a></li><li><a href='https://minkabu.jp/stock/2326/settlement_summary' target='_blank' rel='noopener'>みんかぶ：デジタルアーツ 決算短信AI要約</a></li></ul></details>
+    </article>
+    <article class="card" data-strength="参考">
+      <div class="head"><div><span class="name">日鉄ソリューションズ（参考）</span> <span class="code">2327</span></div>
+        <span class="badge s参考">参考</span></div>
+      <dl class="kpis"><div><dt>株価</dt><dd class=''>¥3,773</dd></div><div><dt>1年騰落（対TOPIX）</dt><dd class='pos'>+8.2%（-28.1%）</dd></div><div><dt>52週高値から</dt><dd class='neg'>-17.0%</dd></div><div><dt>PER（実績）</dt><dd class=''>23.1倍</dd></div><div><dt>PBR</dt><dd class=''>2.50倍</dd></div><div><dt>ROE / 営業利益率</dt><dd class=''>11.7% / 9.9%</dd></div><div><dt>売上成長（前年同期比）</dt><dd class='pos'>+13.3%</dd></div><div><dt>アナリスト平均目標まで</dt><dd class='neg'>-2.8%（9人）</dd></div><div><dt>推奨度（1買い〜5売り）</dt><dd class=''>3.67</dd></div></dl>
+      <div class="cols">
+        <section><h3>過小評価と考える根拠</h3><ul><li>NSSOL 2030ビジョンで2030年代早期に売上5,000億円・営業利益1,000億円・営業利益率20%・ROE15%を目標</li><li>売上成長は13%と同業上位。PBR は同業で最も低い水準</li><li>Oracle Alloy・電通総研との協業・Anthropic との提携など、人月型からの転換策を相次いで発表</li></ul></section>
+        <section><h3>反対材料・リスク</h3><ul class="risk"><li>条件（アナリスト平均目標が現在値を上回る）を満たさないため参考として掲載。アナリストの平均推奨は同業で最も慎重</li><li>営業利益率（約10%）・ROE（約12%）と目標との差が大きい。親子上場</li></ul></section>
+      </div>
+      <details><summary>出典（3件）</summary><ul class="src"><li><a href='https://www.nssol.nipponsteel.com/corporate/2030vision/' target='_blank' rel='noopener'>日鉄ソリューションズ NSSOL 2030ビジョン</a></li><li><a href='https://www.japanmetal.com/news-t20240430134487.html' target='_blank' rel='noopener'>日刊鉄鋼新聞：30年代に営業益1000億円へ ビジョン公表</a></li><li><a href='https://kabuyoho.ifis.co.jp/index.php?action=tp1&amp;bcode=2327&amp;sa=report_pbr' target='_blank' rel='noopener'>IFIS株予報：NSSOL レーティング・目標株価</a></li></ul></details>
+    </article>
+  </div>
+
+  <h2>注意</h2>
+  <ul class="note">
+    <li>株価指標は Yahoo Finance から自動取得した 2026-10-06 時点の値で、毎週更新されます。データ提供元の誤り（異常な PER など）が含まれることがあります。</li>
+    <li>根拠・リスクは公開情報を要約したもので、内容は必ず出典で確認してください。</li>
+    <li>「過小評価」は一つの見方であり、将来の株価を保証するものではありません。投資助言ではなく、投資判断はご自身の責任で行ってください。</li>
+  </ul>
+</main>
+<script>
+(() => {
+  const btns = document.querySelectorAll('.filter button');
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.setAttribute('aria-pressed', x === b));
+    const f = b.dataset.f;
+    document.querySelectorAll('.card').forEach(c => {
+      const s = c.dataset.strength;
+      c.hidden = f && !(s === f || (f === 'C' && s === '参考'));
+    });
+  }));
+})();
+</script>
+</body>
+</html>
