@@ -12,6 +12,7 @@ on:
       - "tools/fetch_history.py"
       - "tools/history_codes.txt"
       - "tools/fetch_valuation.py"
+      - "tools/peers.csv"
 
 permissions:
   contents: write
